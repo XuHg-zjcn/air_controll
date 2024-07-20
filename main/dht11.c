@@ -23,7 +23,7 @@ void dht11_init()
     gpio_config_t io_conf;
     io_conf.intr_type = GPIO_INTR_DISABLE;
     io_conf.mode = GPIO_MODE_OUTPUT_OD;
-    io_conf.pin_bit_mask = GPIO_NUM_DHT11;
+    io_conf.pin_bit_mask = 1ULL<<GPIO_NUM_DHT11;
     io_conf.pull_down_en = 0;
     io_conf.pull_up_en = 1;
     gpio_config(&io_conf);

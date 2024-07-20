@@ -13,27 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *************************************************************************/
-#ifndef CONFIG_H
-#define CONFIG_H
+#include "relay.h"
+#include "config.h"
+#include "driver/gpio.h"
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
+void relay_init()
+{
+    gpio_config_t io_conf;
+    io_conf.intr_type = GPIO_INTR_DISABLE;
+    io_conf.mode = GPIO_MODE_OUTPUT;
+    io_conf.pin_bit_mask = 1ULL<<GPIO_NUM_RELAY;
+    io_conf.pull_down_en = 1;
+    io_conf.pull_up_en = 0;
+    gpio_config(&io_conf);
+    gpio_set_level(GPIO_NUM_RELAY, 0);
+}
 
-#define GPIO_NUM_DHT11 16
-#define GPIO_NUM_RELAY 4
-
-//unit: sec
-#define TIME_DELAY_BOOT     180
-#define TIME_RUN_MAX       7200
-#define TIME_RUN_MIN        300
-#define TIME_STOP_MIN       300
-
-//unit: 0.1oC
-#define TEMP_TARGET_DEFAULT 280
-#define TEMP_DELTA_POS       10
-#define TEMP_DELTA_NEG       10
-
-#define delay_ms(x) vTaskDelay((x) / portTICK_PERIOD_MS)
-#define delay_us(x) ets_delay_us(x)
-
-#endif
+void relay_set(int state)
+{
+    gpio_set_level(GPIO_NUM_RELAY, state);
+}
